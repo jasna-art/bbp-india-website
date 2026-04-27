@@ -1,0 +1,236 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Original brief palette — ink-on-canvas. */
+:root {
+  --ink: #1a1a1a;
+  --canvas: #ffffff;
+  --muted: #6b6b6b;
+  --rule: #d4d4d4;
+  --surface: #fafafa;
+}
+
+html {
+  background-color: var(--canvas);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--canvas);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer utilities {
+  .container-bbp {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .reading-column {
+    max-width: 680px;
+  }
+
+  .section-y {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+
+  @media (min-width: 1024px) {
+    .section-y {
+      padding-top: 100px;
+      padding-bottom: 100px;
+    }
+  }
+
+  .heading-serif {
+    font-family: var(--font-serif), Georgia, serif;
+  }
+
+  .focus-ring {
+    outline: 2px solid var(--ink);
+    outline-offset: 4px;
+  }
+
+  .fade-in {
+    animation: fade-in 200ms ease-out;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Long-form article body styling. Used by /thinking/[slug]. */
+.prose-bbp h2 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 1.75rem;
+  line-height: 1.25;
+  font-weight: 700;
+  margin-top: 3rem;
+  margin-bottom: 1.25rem;
+  color: var(--ink);
+}
+.prose-bbp h3 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: var(--ink);
+}
+.prose-bbp p {
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.prose-bbp p:last-child {
+  margin-bottom: 0;
+}
+.prose-bbp ul {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 1.5rem;
+}
+.prose-bbp ul li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  line-height: 1.6;
+}
+.prose-bbp ul li::before {
+  content: "·";
+  position: absolute;
+  left: 0;
+  font-weight: 700;
+  color: var(--ink);
+}
+.prose-bbp ol {
+  list-style: none;
+  counter-reset: bbp-ol;
+  padding-left: 0;
+  margin-bottom: 1.5rem;
+}
+.prose-bbp ol li {
+  counter-increment: bbp-ol;
+  position: relative;
+  padding-left: 2.5rem;
+  margin-top: 0.5rem;
+  line-height: 1.6;
+}
+.prose-bbp ol li::before {
+  content: counter(bbp-ol, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 700;
+  font-feature-settings: "tnum";
+  color: var(--muted);
+}
+.prose-bbp strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+.prose-bbp em {
+  font-style: italic;
+}
+.prose-bbp blockquote {
+  border-left: 2px solid var(--ink);
+  padding-left: 1.5rem;
+  margin: 2rem 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.prose-bbp a {
+  text-decoration: underline;
+  text-decoration-color: var(--ink);
+  text-underline-offset: 4px;
+  transition: color 150ms ease-out;
+}
+.prose-bbp a:hover {
+  color: var(--muted);
+}
+
+/* Hide the native cursor (default arrow, link/hand pointer, etc.) when our
+   custom cursor is active. Keep the I-beam on text inputs so typing UX stays
+   correct, and never hide cursor for users who prefer reduced motion. */
+body.bbp-cursor-active,
+body.bbp-cursor-active * {
+  cursor: none !important;
+}
+
+body.bbp-cursor-active input[type="text"],
+body.bbp-cursor-active input[type="email"],
+body.bbp-cursor-active input[type="url"],
+body.bbp-cursor-active input[type="tel"],
+body.bbp-cursor-active input[type="search"],
+body.bbp-cursor-active input[type="password"],
+body.bbp-cursor-active input:not([type]),
+body.bbp-cursor-active textarea,
+body.bbp-cursor-active [contenteditable="true"] {
+  cursor: text !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.bbp-cursor-active,
+  body.bbp-cursor-active * {
+    cursor: auto !important;
+  }
+}
+
+/* Print stylesheet — strip UI chrome, keep content. */
+@media print {
+  header,
+  footer,
+  nav,
+  [data-no-print] {
+    display: none !important;
+  }
+
+  body {
+    color: #000;
+    background: #fff;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+
+  .section-y {
+    padding: 24px 0;
+  }
+}
